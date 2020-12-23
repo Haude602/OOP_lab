@@ -1,68 +1,80 @@
+//WAP in CPP to illustrate the concept of multipath inheritance and virtual base class using following figure.
+//  				--->|iNTERNAL|   ---
+//   |STUDENT|-----              		----->  |RESULT|
+//  				--->|EXTERNAL|   ---
 
 #include<iostream>
 using namespace std;
-
 class student
 {
 	protected:
-		int roll;
-		char name[100];
+	int roll;
+	char name[25];
 	public:
-		void getdata()
-		{
-			cout<<"\nEnter name and Roll no\n";
-			cin.getline(name,100);
-			cin>>roll;
-		}
+	void getstudent()
+	{
+		cout<<"Enter name and roll:"<<endl;
+		cin>>name>>roll;
+	}
 };
-class cr
+class internal:virtual public student
 {
 	protected:
-		char gmail[100];
+	float marks1,marks2,marks3;
 	public:
-		void getdata()
-		{
-			cout<<"\n Enter Gmail adddress\n";
-			cin.getline(gmail,100);
-		}
+	void getinternal()
+	{
+		cout<<"Enter internal marks in three subjects"<<endl;
+		cin>>marks1>>marks2>>marks3;
+	}
+	void showinternal()
+	{
+		cout<<"marks1:"<<marks1<<endl<<"marks2:"<<marks2<<endl
+		<<"marks3:"<<marks3<<endl;
+	}
 };
-
-class employee: public student , public cr
+class external:virtual public student
 {
 	protected:
-		char org_name[100];
+	float marks4,marks5,marks6;
 	public:
-		void setdata()
-		{
-			cout<<"Enter name of school/college\n";
-			cin.getline(org_name,100);
-		}
+	void getexternal()
+	{
+		cout<<"Enter external marks in three subjects"<<endl;
+		cin>>marks4>>marks5>>marks6;
+	}
+	void showexternal()
+	{
+		cout<<"marks4:"<<marks4<<endl<<"marks5:"<<marks5<<endl
+		<<"marks6:"<<marks6<<endl;
+	}
 };
-class person:public employee
+class result:public internal,public external
 {
 	protected:
-		char gender[50];
+	float total,percentage;
 	public:
-		void getperson()
-		{
-			cout<<"\nEnter your gender\n";
-			cin.getline(gender,50);
-		}
-		void showdata()
-		{
-			cout<<"\nDetails of  person are\n ";
-			cout<<"Name: "<<name<<"\nRoll no:"<<roll<<"\nGmail:"<<gmail<<"\nSchool/college"<<org_name<<"\nGender"<<gender;
-		}
+	void pertotal()
+	{
+		total=marks1+marks2+marks3+marks4+marks5+marks6;
+		percentage=total/600*100;
+	}
+	void showresult()
+	{
+		cout<<"The result is:"<<endl;
+		cout<<"Name:"<<name<<endl<<"Roll:"<<roll<<endl;
+		showinternal();
+		showexternal();
+		cout<<"Total"<<total<<endl<<"Percentage:"<<percentage<<endl;
+	}
 };
 int main()
 {
-	person* ptr=new person;
-	ptr->student::getdata();  //removes ambiguity as both parent class have member function with same name
-	ptr->cr::getdata(); //removes ambiguity
-	ptr->setdata();
-	ptr->getperson();
-	ptr->showdata();
-	delete ptr;
+	result r;
+	r.getstudent();
+	r.getinternal();
+	r.getexternal();
+	r.pertotal();
+	r.showresult();
 	return 0;
 }
-
